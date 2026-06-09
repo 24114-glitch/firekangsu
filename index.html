@@ -6,7 +6,6 @@
   <title>AI 면접 코치</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
       --bg:       #f0f4ff;
       --surface:  #ffffff;
@@ -19,372 +18,59 @@
       --text:     #1a202c;
       --radius:   16px;
     }
-
-    body {
-      background: var(--bg);
-      font-family: 'Segoe UI', Arial, sans-serif;
-      color: var(--text);
-      min-height: 100vh;
-    }
-
-    /* ── 헤더 ── */
-    header {
-      background: var(--primary);
-      color: white;
-      padding: 18px 28px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 12px rgba(67,97,238,.25);
-    }
-
-    header h1 {
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: -.3px;
-    }
-
-    header .tagline {
-      font-size: 12px;
-      opacity: .75;
-      margin-top: 2px;
-    }
-
-    #headerRight {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 13px;
-    }
-
-    #headerUserEmail {
-      opacity: .85;
-      max-width: 180px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    /* ── 탭 네비 ── */
-    .tab-nav {
-      display: flex;
-      gap: 4px;
-      padding: 16px 28px 0;
-      border-bottom: 2px solid var(--border);
-      background: var(--surface);
-    }
-
-    .tab-btn {
-      padding: 10px 22px;
-      border: none;
-      background: none;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--muted);
-      cursor: pointer;
-      border-bottom: 3px solid transparent;
-      margin-bottom: -2px;
-      border-radius: 8px 8px 0 0;
-      transition: color .2s, border-color .2s;
-    }
-
-    .tab-btn.active {
-      color: var(--primary);
-      border-bottom-color: var(--primary);
-    }
-
+    body { background: var(--bg); font-family: 'Segoe UI', Arial, sans-serif; color: var(--text); min-height: 100vh; }
+    header { background: var(--primary); color: white; padding: 18px 28px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 12px rgba(67,97,238,.25); }
+    header h1 { font-size: 20px; font-weight: 700; letter-spacing: -.3px; }
+    header .tagline { font-size: 12px; opacity: .75; margin-top: 2px; }
+    #headerRight { display: flex; align-items: center; gap: 12px; font-size: 13px; }
+    #headerUserEmail { opacity: .85; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .tab-nav { display: flex; gap: 4px; padding: 16px 28px 0; border-bottom: 2px solid var(--border); background: var(--surface); }
+    .tab-btn { padding: 10px 22px; border: none; background: none; font-size: 14px; font-weight: 600; color: var(--muted); cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; border-radius: 8px 8px 0 0; transition: color .2s, border-color .2s; }
+    .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
     .tab-btn:hover:not(.active) { color: var(--text); }
-
-    /* ── 컨텐츠 래퍼 ── */
-    .page {
-      display: none;
-      max-width: 860px;
-      margin: 32px auto;
-      padding: 0 20px 60px;
-    }
-
+    .page { display: none; max-width: 860px; margin: 32px auto; padding: 0 20px 60px; }
     .page.active { display: block; }
-
-    /* ── 카드 ── */
-    .card {
-      background: var(--surface);
-      border-radius: var(--radius);
-      padding: 28px;
-      box-shadow: 0 4px 18px rgba(0,0,0,.06);
-      margin-bottom: 20px;
-    }
-
-    .card-title {
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 18px;
-      color: var(--primary);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .card-title .icon {
-      width: 28px;
-      height: 28px;
-      background: var(--primary);
-      border-radius: 8px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 14px;
-    }
-
-    /* ── 폼 요소 ── */
-    label.field-label {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--muted);
-      margin-bottom: 6px;
-      margin-top: 16px;
-    }
-
+    .card { background: var(--surface); border-radius: var(--radius); padding: 28px; box-shadow: 0 4px 18px rgba(0,0,0,.06); margin-bottom: 20px; }
+    .card-title { font-size: 16px; font-weight: 700; margin-bottom: 18px; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+    .card-title .icon { width: 28px; height: 28px; background: var(--primary); border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: white; font-size: 14px; }
+    label.field-label { display: block; font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 6px; margin-top: 16px; }
     label.field-label:first-child { margin-top: 0; }
-
-    input[type="text"],
-    input[type="email"],
-    input[type="password"],
-    input[type="number"],
-    select,
-    textarea {
-      width: 100%;
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      padding: 11px 14px;
-      font-size: 14px;
-      font-family: inherit;
-      color: var(--text);
-      background: #fafbff;
-      outline: none;
-      transition: border-color .2s, box-shadow .2s;
-    }
-
-    input:focus, select:focus, textarea:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(67,97,238,.12);
-    }
-
+    input[type="text"], input[type="email"], input[type="password"], input[type="number"], select, textarea { width: 100%; border: 1.5px solid var(--border); border-radius: 10px; padding: 11px 14px; font-size: 14px; font-family: inherit; color: var(--text); background: #fafbff; outline: none; transition: border-color .2s, box-shadow .2s; }
+    input:focus, select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(67,97,238,.12); }
     textarea { resize: vertical; min-height: 120px; line-height: 1.6; }
-
-    /* ── 버튼 ── */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      height: 44px;
-      padding: 0 22px;
-      border: none;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform .15s, opacity .15s, box-shadow .15s;
-    }
-
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 44px; padding: 0 22px; border: none; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; transition: transform .15s, opacity .15s, box-shadow .15s; }
     .btn:hover { transform: translateY(-2px); opacity: .93; box-shadow: 0 4px 14px rgba(0,0,0,.12); }
     .btn:disabled { opacity: .5; cursor: not-allowed; transform: none; box-shadow: none; }
-
     .btn-primary  { background: var(--primary); color: white; }
     .btn-accent   { background: var(--accent);  color: white; }
     .btn-success  { background: var(--success); color: white; }
     .btn-muted    { background: var(--border);  color: var(--text); }
-    .btn-danger   { background: #ef5350; color: white; }
     .btn-outline  { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
-
-    .btn-row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 18px;
-    }
-
-    /* ── 상태 메시지 ── */
-    .status-msg {
-      font-size: 13px;
-      color: var(--muted);
-      margin-top: 10px;
-      min-height: 20px;
-    }
-
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+    .status-msg { font-size: 13px; color: var(--muted); margin-top: 10px; min-height: 20px; }
     .status-msg.ok  { color: #2e7d32; }
     .status-msg.err { color: #c62828; }
-
-    /* ── 생기부 섹션 구분 ── */
-    .section-divider {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 20px 0 10px;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: .5px;
-      text-transform: uppercase;
-    }
-
-    .section-divider::before,
-    .section-divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
-
-    /* ── 면접 질문 카드 ── */
+    .section-divider { display: flex; align-items: center; gap: 10px; margin: 20px 0 10px; color: var(--muted); font-size: 12px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; }
+    .section-divider::before, .section-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
     .q-list { display: flex; flex-direction: column; gap: 14px; }
-
-    .q-item {
-      border: 1.5px solid var(--border);
-      border-radius: 14px;
-      padding: 18px 20px;
-      background: #fafbff;
-      position: relative;
-      transition: border-color .2s;
-    }
-
-    .q-item.playing {
-      border-color: var(--accent);
-      background: #fff0f6;
-    }
-
-    .q-item-num {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--primary);
-      letter-spacing: .5px;
-      text-transform: uppercase;
-      margin-bottom: 6px;
-    }
-
-    .q-item-text {
-      font-size: 15px;
-      line-height: 1.65;
-      color: var(--text);
-    }
-
-    .q-item-controls {
-      display: flex;
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    .btn-sm {
-      height: 34px;
-      padding: 0 14px;
-      font-size: 12px;
-      border-radius: 8px;
-    }
-
-    /* ── 진행 표시 ── */
-    .progress-bar-wrap {
-      height: 6px;
-      background: var(--border);
-      border-radius: 4px;
-      overflow: hidden;
-      margin: 14px 0;
-    }
-
-    .progress-bar {
-      height: 100%;
-      background: linear-gradient(90deg, var(--primary), var(--accent));
-      border-radius: 4px;
-      transition: width .4s;
-      width: 0%;
-    }
-
-    /* ── 로그인 페이지 ── */
-    #authSection {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: calc(100vh - 68px);
-      padding: 40px 20px;
-    }
-
-    .auth-card {
-      background: var(--surface);
-      border-radius: 24px;
-      padding: 40px 36px;
-      width: min(420px, 100%);
-      box-shadow: 0 12px 40px rgba(0,0,0,.1);
-    }
-
-    .auth-card h2 {
-      font-size: 22px;
-      font-weight: 800;
-      text-align: center;
-      margin-bottom: 6px;
-      color: var(--primary);
-    }
-
-    .auth-card .auth-sub {
-      text-align: center;
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 28px;
-    }
-
-    .auth-notice {
-      margin-top: 18px;
-      padding: 12px 16px;
-      background: #fff8e1;
-      border-radius: 10px;
-      font-size: 13px;
-      color: #795548;
-      line-height: 1.6;
-    }
-
-    /* ── 음성 옵션 ── */
-    .voice-opts {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    /* ── 토스트 ── */
-    #toast {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: #1a202c;
-      color: white;
-      padding: 12px 24px;
-      border-radius: 40px;
-      font-size: 14px;
-      font-weight: 600;
-      box-shadow: 0 6px 24px rgba(0,0,0,.2);
-      transition: transform .3s;
-      z-index: 999;
-      white-space: nowrap;
-    }
-
+    .q-item { border: 1.5px solid var(--border); border-radius: 14px; padding: 18px 20px; background: #fafbff; position: relative; transition: border-color .2s; }
+    .q-item.playing { border-color: var(--accent); background: #fff0f6; }
+    .q-item-num { font-size: 11px; font-weight: 700; color: var(--primary); letter-spacing: .5px; text-transform: uppercase; margin-bottom: 6px; }
+    .q-item-text { font-size: 15px; line-height: 1.65; color: var(--text); }
+    .q-item-controls { display: flex; gap: 8px; margin-top: 12px; }
+    .btn-sm { height: 34px; padding: 0 14px; font-size: 12px; border-radius: 8px; }
+    .progress-bar-wrap { height: 6px; background: var(--border); border-radius: 4px; overflow: hidden; margin: 14px 0; }
+    .progress-bar { height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); border-radius: 4px; transition: width .4s; width: 0%; }
+    #authSection { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: calc(100vh - 68px); padding: 40px 20px; }
+    .auth-card { background: var(--surface); border-radius: 24px; padding: 40px 36px; width: min(420px, 100%); box-shadow: 0 12px 40px rgba(0,0,0,.1); }
+    .auth-card h2 { font-size: 22px; font-weight: 800; text-align: center; margin-bottom: 6px; color: var(--primary); }
+    .auth-card .auth-sub { text-align: center; font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+    .auth-notice { margin-top: 18px; padding: 12px 16px; background: #fff8e1; border-radius: 10px; font-size: 13px; color: #795548; line-height: 1.6; }
+    .voice-opts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+    #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(80px); background: #1a202c; color: white; padding: 12px 24px; border-radius: 40px; font-size: 14px; font-weight: 600; box-shadow: 0 6px 24px rgba(0,0,0,.2); transition: transform .3s; z-index: 999; white-space: nowrap; }
     #toast.show { transform: translateX(-50%) translateY(0); }
-
-    /* ── 배지 ── */
-    .badge {
-      display: inline-block;
-      padding: 2px 10px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .badge-blue   { background: #e8eeff; color: var(--primary); }
-    .badge-pink   { background: #ffe8f4; color: var(--accent);  }
-    .badge-green  { background: #e6faf4; color: #1b7a5a;        }
-
-    /* ── 반응형 ── */
+    .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+    .badge-blue { background: #e8eeff; color: var(--primary); }
     @media (max-width: 600px) {
       header { padding: 14px 18px; }
       .tab-nav { padding: 12px 14px 0; }
@@ -398,7 +84,6 @@
 </head>
 <body>
 
-<!-- ════════════════════════ 헤더 ════════════════════════ -->
 <header>
   <div>
     <h1>🎓 AI 면접 코치</h1>
@@ -410,24 +95,19 @@
   </div>
 </header>
 
-<!-- ════════════════════════ 로그인 ════════════════════════ -->
 <div id="authSection">
   <div class="auth-card">
     <h2>로그인</h2>
     <div class="auth-sub">AI 면접 코치를 시작하려면 로그인하세요</div>
-
     <label class="field-label">이메일</label>
     <input id="emailInput" type="email" placeholder="example@email.com" />
-
     <label class="field-label" style="margin-top:12px;">비밀번호</label>
     <input id="passwordInput" type="password" placeholder="6자리 이상" />
-
     <div class="btn-row" style="margin-top:20px;">
       <button class="btn btn-primary" id="loginBtn" style="flex:1;">로그인</button>
       <button class="btn btn-outline" id="signupBtn" style="flex:1;">회원가입</button>
     </div>
     <div id="authStatus" class="status-msg" style="text-align:center;"></div>
-
     <div class="auth-notice">
       처음 이용이라면 <strong>회원가입</strong>을 먼저 눌러주세요.<br />
       이미 계정이 있다면 <strong>로그인</strong>을 눌러주세요.
@@ -435,61 +115,39 @@
   </div>
 </div>
 
-<!-- ════════════════════════ 메인 앱 ════════════════════════ -->
 <div id="appSection" style="display:none;">
-
-  <!-- 탭 네비 -->
   <nav class="tab-nav">
     <button class="tab-btn active" data-tab="tab-record">📋 생기부 입력</button>
     <button class="tab-btn" data-tab="tab-interview">🎤 면접 연습</button>
   </nav>
 
-  <!-- ────────── 탭 1: 생기부 입력/저장 ────────── -->
   <div class="page active" id="tab-record">
-
     <div class="card">
-      <div class="card-title">
-        <span class="icon">📋</span> 학교생활기록부 입력
-      </div>
-
+      <div class="card-title"><span class="icon">📋</span> 학교생활기록부 입력</div>
       <div class="section-divider">기본 정보</div>
-
       <label class="field-label">이름 (선택)</label>
       <input id="rec-name" type="text" placeholder="홍길동" />
-
       <label class="field-label">지원 학과 / 희망 진로</label>
       <input id="rec-major" type="text" placeholder="예: 컴퓨터공학과, 의예과, 경영학과" />
-
       <div class="section-divider">교내 활동</div>
-
       <label class="field-label">자율활동</label>
       <textarea id="rec-auto" placeholder="학급 회장, 학교 축제 기획단 등 자율활동 내용을 입력하세요."></textarea>
-
       <label class="field-label">동아리 활동</label>
       <textarea id="rec-club" placeholder="소속 동아리명, 활동 내용, 역할 등을 입력하세요."></textarea>
-
       <label class="field-label">봉사활동</label>
       <textarea id="rec-volunteer" placeholder="봉사 기관, 시간, 활동 내용 등을 입력하세요."></textarea>
-
       <label class="field-label">진로활동</label>
       <textarea id="rec-career" placeholder="직업 탐색, 멘토링, 진로 캠프 등 진로활동 내용을 입력하세요."></textarea>
-
       <div class="section-divider">교과 및 세부 특기사항</div>
-
       <label class="field-label">세부능력 및 특기사항 (과목별 내용)</label>
       <textarea id="rec-subject" rows="5" placeholder="예) 수학: 미적분 단원에서 높은 이해력을 보임. 물리학: 실험 설계에 창의성을 발휘함..."></textarea>
-
       <label class="field-label">행동특성 및 종합의견</label>
       <textarea id="rec-general" placeholder="담임선생님이 작성하신 행동특성 및 종합의견을 입력하세요."></textarea>
-
       <div class="section-divider">수상 및 기타</div>
-
       <label class="field-label">수상 경력</label>
       <textarea id="rec-award" placeholder="교내 수상 내역을 입력하세요. 예: 수학경시대회 금상, 독서토론대회 우수상..."></textarea>
-
       <label class="field-label">기타 특이사항</label>
       <textarea id="rec-etc" placeholder="독서 이력, 자격증, 기타 특이사항을 입력하세요."></textarea>
-
       <div class="btn-row">
         <button class="btn btn-success" id="saveRecordBtn">💾 생기부 저장</button>
         <button class="btn btn-muted"   id="loadRecordBtn">🔄 저장된 생기부 불러오기</button>
@@ -498,15 +156,9 @@
     </div>
   </div>
 
-  <!-- ────────── 탭 2: 면접 연습 ────────── -->
   <div class="page" id="tab-interview">
-
-    <!-- 설정 카드 -->
     <div class="card">
-      <div class="card-title">
-        <span class="icon">⚙️</span> 면접 설정
-      </div>
-
+      <div class="card-title"><span class="icon">⚙️</span> 면접 설정</div>
       <label class="field-label">질문 개수</label>
       <select id="qCount">
         <option value="3">3개</option>
@@ -514,7 +166,6 @@
         <option value="7">7개</option>
         <option value="10">10개</option>
       </select>
-
       <label class="field-label">면접 유형</label>
       <select id="qType">
         <option value="종합">종합 (생기부 전반)</option>
@@ -523,9 +174,7 @@
         <option value="진로">진로 및 학업 역량</option>
         <option value="인성">인성 및 협업</option>
       </select>
-
       <div class="section-divider">TTS 음성 설정</div>
-
       <div class="voice-opts">
         <div>
           <label class="field-label">모델</label>
@@ -550,7 +199,6 @@
           <input id="ttsSpeed" type="number" min="0.25" max="4.0" step="0.05" value="1.0" />
         </div>
       </div>
-
       <div class="btn-row">
         <button class="btn btn-accent" id="generateBtn">✨ 면접 질문 생성</button>
       </div>
@@ -560,30 +208,23 @@
       <div id="generateStatus" class="status-msg"></div>
     </div>
 
-    <!-- 질문 목록 카드 -->
     <div class="card" id="questionsCard" style="display:none;">
       <div class="card-title">
         <span class="icon">🎤</span> 면접 질문
         <span class="badge badge-blue" id="qBadge"></span>
       </div>
-
       <div class="btn-row" style="margin-top:0; margin-bottom:16px;">
         <button class="btn btn-primary btn-sm" id="playAllBtn">▶ 전체 재생</button>
         <button class="btn btn-muted btn-sm"   id="stopBtn">⏹ 정지</button>
       </div>
-
       <div id="qList" class="q-list"></div>
-
       <audio id="audioPlayer" style="display:none;"></audio>
     </div>
+  </div>
+</div>
 
-  </div><!-- /tab-interview -->
-</div><!-- /appSection -->
-
-<!-- 토스트 -->
 <div id="toast"></div>
 
-<!-- ════════════════════════ Firebase + 앱 로직 ════════════════════════ -->
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
 import {
@@ -594,7 +235,6 @@ import {
   getDatabase, ref, set, get
 } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
 
-// ── 설정 ──────────────────────────────────────────────────
 const firebaseConfig = {
   apiKey: "AIzaSyBt5tllocCcZv5rh8lGviaBayRNHv9nf5U",
   authDomain: "kangsuu11.firebaseapp.com",
@@ -606,53 +246,46 @@ const firebaseConfig = {
   measurementId: "G-HK9JNTTWCE"
 };
 
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxDNMIktE288seW2Mr5YgksYFeAP3SNl8YyQZFa1DuvD0N_8pjRLDmxkZBYyQ4WGPmt/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwlBFkZe4u0LOpOw394U2_6XZfA5gyU3kQ8ALCBnJ_zfYMHFC6RnWK23I3A8Tpc9AArmg/exec';
 
-// ── Firebase 초기화 ────────────────────────────────────────
-const app      = initializeApp(FIREBASE_CONFIG);
+const app      = initializeApp(firebaseConfig);
 const auth     = getAuth(app);
 const database = getDatabase(app);
 
-// ── DOM ───────────────────────────────────────────────────
-const authSection  = document.getElementById('authSection');
-const appSection   = document.getElementById('appSection');
-const emailInput   = document.getElementById('emailInput');
-const passwordInput= document.getElementById('passwordInput');
-const loginBtn     = document.getElementById('loginBtn');
-const signupBtn    = document.getElementById('signupBtn');
-const logoutBtn    = document.getElementById('logoutBtn');
-const authStatus   = document.getElementById('authStatus');
-const headerRight  = document.getElementById('headerRight');
-const headerEmail  = document.getElementById('headerUserEmail');
+const authSection   = document.getElementById('authSection');
+const appSection    = document.getElementById('appSection');
+const emailInput    = document.getElementById('emailInput');
+const passwordInput = document.getElementById('passwordInput');
+const loginBtn      = document.getElementById('loginBtn');
+const signupBtn     = document.getElementById('signupBtn');
+const logoutBtn     = document.getElementById('logoutBtn');
+const authStatus    = document.getElementById('authStatus');
+const headerRight   = document.getElementById('headerRight');
+const headerEmail   = document.getElementById('headerUserEmail');
+const saveRecordBtn = document.getElementById('saveRecordBtn');
+const loadRecordBtn = document.getElementById('loadRecordBtn');
+const recordStatus  = document.getElementById('recordStatus');
+const generateBtn   = document.getElementById('generateBtn');
+const generateStatus= document.getElementById('generateStatus');
+const genProgressWrap=document.getElementById('genProgressWrap');
+const genProgress   = document.getElementById('genProgress');
+const questionsCard = document.getElementById('questionsCard');
+const qList         = document.getElementById('qList');
+const qBadge        = document.getElementById('qBadge');
+const playAllBtn    = document.getElementById('playAllBtn');
+const stopBtn       = document.getElementById('stopBtn');
+const audioPlayer   = document.getElementById('audioPlayer');
 
-const saveRecordBtn  = document.getElementById('saveRecordBtn');
-const loadRecordBtn  = document.getElementById('loadRecordBtn');
-const recordStatus   = document.getElementById('recordStatus');
-
-const generateBtn    = document.getElementById('generateBtn');
-const generateStatus = document.getElementById('generateStatus');
-const genProgressWrap= document.getElementById('genProgressWrap');
-const genProgress    = document.getElementById('genProgress');
-const questionsCard  = document.getElementById('questionsCard');
-const qList          = document.getElementById('qList');
-const qBadge         = document.getElementById('qBadge');
-const playAllBtn     = document.getElementById('playAllBtn');
-const stopBtn        = document.getElementById('stopBtn');
-const audioPlayer    = document.getElementById('audioPlayer');
-
-// 생기부 필드 ID 목록
 const RECORD_FIELDS = [
   'rec-name','rec-major','rec-auto','rec-club',
   'rec-volunteer','rec-career','rec-subject',
   'rec-general','rec-award','rec-etc'
 ];
 
-let currentUser  = null;
-let questions    = [];
-let isPlaying    = false;
-let stopRequested= false;
-
-// ════════════ 인증 ════════════
+let currentUser   = null;
+let questions     = [];
+let isPlaying     = false;
+let stopRequested = false;
 
 signupBtn.addEventListener('click', async () => {
   const acc = getAccount();
@@ -696,7 +329,6 @@ onAuthStateChanged(auth, async (user) => {
     emailInput.value    = '';
     passwordInput.value = '';
     authStatus.textContent = '';
-    // 자동으로 저장된 생기부 불러오기
     await loadRecord(true);
   } else {
     currentUser = null;
@@ -722,14 +354,11 @@ function getAccount() {
   return { email, password };
 }
 
-// Enter 키 로그인
 document.addEventListener('keydown', (e) => {
   if (e.key !== 'Enter') return;
   const id = document.activeElement?.id;
   if (id === 'emailInput' || id === 'passwordInput') loginBtn.click();
 });
-
-// ════════════ 탭 ════════════
 
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -740,19 +369,14 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   });
 });
 
-// ════════════ 생기부 저장 / 불러오기 ════════════
-
 saveRecordBtn.addEventListener('click', saveRecord);
 loadRecordBtn.addEventListener('click', () => loadRecord(false));
 
 async function saveRecord() {
   if (!currentUser) return;
   const data = {};
-  RECORD_FIELDS.forEach(id => {
-    data[id] = document.getElementById(id).value.trim();
-  });
+  RECORD_FIELDS.forEach(id => { data[id] = document.getElementById(id).value.trim(); });
   data.savedAt = new Date().toLocaleString('ko-KR');
-
   try {
     recordStatus.textContent = '저장 중...';
     recordStatus.className = 'status-msg';
@@ -769,10 +393,7 @@ async function saveRecord() {
 async function loadRecord(silent = false) {
   if (!currentUser) return;
   try {
-    if (!silent) {
-      recordStatus.textContent = '불러오는 중...';
-      recordStatus.className = 'status-msg';
-    }
+    if (!silent) { recordStatus.textContent = '불러오는 중...'; recordStatus.className = 'status-msg'; }
     const snapshot = await get(ref(database, `users/${currentUser.uid}/record`));
     if (snapshot.exists()) {
       const data = snapshot.val();
@@ -786,30 +407,20 @@ async function loadRecord(silent = false) {
         showToast('생기부를 불러왔습니다!');
       }
     } else {
-      if (!silent) {
-        recordStatus.textContent = '저장된 생기부가 없습니다.';
-        recordStatus.className = 'status-msg';
-      }
+      if (!silent) { recordStatus.textContent = '저장된 생기부가 없습니다.'; recordStatus.className = 'status-msg'; }
     }
   } catch (e) {
-    if (!silent) {
-      recordStatus.textContent = '❌ 불러오기 실패: ' + e.message;
-      recordStatus.className = 'status-msg err';
-    }
+    if (!silent) { recordStatus.textContent = '❌ 불러오기 실패: ' + e.message; recordStatus.className = 'status-msg err'; }
   }
 }
 
-// ════════════ 생기부 요약 텍스트 만들기 ════════════
-
 function buildRecordText() {
-  const get = (id) => document.getElementById(id).value.trim();
+  const getValue = (id) => document.getElementById(id).value.trim();
   const parts = [];
-
-  const name  = get('rec-name');
-  const major = get('rec-major');
+  const name  = getValue('rec-name');
+  const major = getValue('rec-major');
   if (name)  parts.push(`지원자 이름: ${name}`);
   if (major) parts.push(`지원 학과/희망 진로: ${major}`);
-
   const sections = [
     ['자율활동',   'rec-auto'],
     ['동아리활동', 'rec-club'],
@@ -820,32 +431,25 @@ function buildRecordText() {
     ['수상 경력',  'rec-award'],
     ['기타 특이사항', 'rec-etc'],
   ];
-
   sections.forEach(([label, id]) => {
-    const val = get(id);
+    const val = getValue(id);
     if (val) parts.push(`[${label}]\n${val}`);
   });
-
   return parts.join('\n\n');
 }
-
-// ════════════ 면접 질문 생성 ════════════
 
 generateBtn.addEventListener('click', generateQuestions);
 
 async function generateQuestions() {
   if (!currentUser) return;
-
   const recordText = buildRecordText();
   if (!recordText || recordText.trim().length < 30) {
     generateStatus.textContent = '❌ 생기부 탭에서 내용을 먼저 입력하고 저장해주세요.';
     generateStatus.className = 'status-msg err';
     return;
   }
-
-  const count  = document.getElementById('qCount').value;
-  const type   = document.getElementById('qType').value;
-
+  const count = document.getElementById('qCount').value;
+  const type  = document.getElementById('qType').value;
   const prompt = `다음은 고등학생의 학교생활기록부 내용입니다:\n\n${recordText}\n\n위 생기부를 바탕으로 대학교 입학 면접에서 실제로 사용할 수 있는 ${type} 유형의 면접 질문을 정확히 ${count}개 만들어주세요.\n\n규칙:\n- 각 질문은 번호 없이 한 줄씩 작성\n- 질문만 작성하고 해설이나 부가 설명 없이\n- 생기부 내용과 직접 연결되는 구체적인 질문\n- 각 질문은 줄바꿈으로 구분\n\n${count}개의 질문:`;
 
   generateBtn.disabled = true;
@@ -858,27 +462,16 @@ async function generateQuestions() {
 
   try {
     genProgress.style.width = '40%';
-    const res  = await fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      body: JSON.stringify({ question: prompt })
-    });
+    const res  = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify({ question: prompt }) });
     genProgress.style.width = '80%';
     const data = await res.json();
-
     if (data.error) throw new Error(data.error);
-
     const raw = data.answer || '';
-    questions = raw.split('\n')
-      .map(l => l.trim())
-      .filter(l => l.length > 5)
-      .slice(0, Number(count));
-
+    questions = raw.split('\n').map(l => l.trim()).filter(l => l.length > 5).slice(0, Number(count));
     if (questions.length === 0) throw new Error('질문 생성 결과가 없습니다.');
-
     genProgress.style.width = '100%';
     generateStatus.textContent = `✅ ${questions.length}개 질문 생성 완료!`;
     generateStatus.className = 'status-msg ok';
-
     renderQuestions();
     showToast(`면접 질문 ${questions.length}개가 준비됐습니다!`);
   } catch (e) {
@@ -891,13 +484,10 @@ async function generateQuestions() {
   }
 }
 
-// ════════════ 질문 렌더링 ════════════
-
 function renderQuestions() {
   qList.innerHTML = '';
   qBadge.textContent = `총 ${questions.length}개`;
   questionsCard.style.display = 'block';
-
   questions.forEach((q, i) => {
     const item = document.createElement('div');
     item.className = 'q-item';
@@ -913,10 +503,8 @@ function renderQuestions() {
   });
 }
 
-// ════════════ TTS 재생 ════════════
-
 playAllBtn.addEventListener('click', () => playAll());
-stopBtn.addEventListener('click',    () => { stopRequested = true; audioPlayer.pause(); setAllIdle(); });
+stopBtn.addEventListener('click', () => { stopRequested = true; audioPlayer.pause(); setAllIdle(); });
 
 window.__playOne = async function(idx) {
   if (isPlaying) { stopRequested = true; audioPlayer.pause(); await sleep(300); }
@@ -931,14 +519,12 @@ async function playAll() {
   if (isPlaying) return;
   stopRequested = false;
   isPlaying = true;
-
   for (let i = 0; i < questions.length; i++) {
     if (stopRequested) break;
     await playQuestion(i);
     if (stopRequested) break;
     if (i < questions.length - 1) await sleep(800);
   }
-
   setAllIdle();
   isPlaying = false;
   if (!stopRequested) showToast('모든 질문 재생 완료!');
@@ -946,37 +532,24 @@ async function playAll() {
 
 async function playQuestion(idx) {
   const item = document.getElementById(`qitem-${idx}`);
-  if (item) {
-    setAllIdle();
-    item.classList.add('playing');
-    item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-
-  const text   = questions[idx];
-  const model  = document.getElementById('ttsModel').value;
-  const voice  = document.getElementById('ttsVoice').value;
-  const speed  = Number(document.getElementById('ttsSpeed').value || 1.0);
-
+  if (item) { setAllIdle(); item.classList.add('playing'); item.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+  const text  = questions[idx];
+  const model = document.getElementById('ttsModel').value;
+  const voice = document.getElementById('ttsVoice').value;
+  const speed = Number(document.getElementById('ttsSpeed').value || 1.0);
   generateStatus.textContent = `🔊 질문 ${idx + 1} 음성 생성 중...`;
-
   try {
-    const res  = await fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      body: JSON.stringify({ type: 'tts', text, model, voice, speed })
-    });
+    const res  = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify({ type: 'tts', text, model, voice, speed }) });
     const data = await res.json();
     if (data.error)        throw new Error(data.error);
     if (!data.audioBase64) throw new Error('음성 데이터 없음');
-
     const url = base64ToUrl(data.audioBase64, 'audio/mpeg');
     audioPlayer.src = url;
-
     await new Promise((resolve) => {
       audioPlayer.onended = resolve;
       audioPlayer.onerror = resolve;
       audioPlayer.play().catch(resolve);
     });
-
     generateStatus.textContent = `✅ 질문 ${idx + 1} 재생 완료`;
   } catch (e) {
     generateStatus.textContent = `❌ 질문 ${idx + 1} TTS 실패: ${e.message}`;
@@ -986,15 +559,11 @@ async function playQuestion(idx) {
   }
 }
 
-// ════════════ 유틸 ════════════
-
-function setAllIdle() {
-  document.querySelectorAll('.q-item').forEach(el => el.classList.remove('playing'));
-}
+function setAllIdle() { document.querySelectorAll('.q-item').forEach(el => el.classList.remove('playing')); }
 
 function base64ToUrl(base64, mimeType) {
   const bytes = atob(base64);
-  const arr   = [];
+  const arr = [];
   for (let i = 0; i < bytes.length; i += 512) {
     const slice = bytes.slice(i, i + 512);
     arr.push(new Uint8Array([...slice].map(c => c.charCodeAt(0))));
@@ -1003,9 +572,7 @@ function base64ToUrl(base64, mimeType) {
 }
 
 function escapeHTML(t) {
-  return String(t)
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
@@ -1019,13 +586,13 @@ function showToast(msg) {
 
 function koreanError(code) {
   const map = {
-    'auth/email-already-in-use':  '이미 가입된 이메일입니다.',
-    'auth/invalid-email':         '이메일 형식이 올바르지 않습니다.',
-    'auth/weak-password':         '비밀번호가 너무 약합니다.',
-    'auth/user-not-found':        '가입되지 않은 이메일입니다.',
-    'auth/wrong-password':        '비밀번호가 올바르지 않습니다.',
-    'auth/invalid-credential':    '이메일 또는 비밀번호가 틀렸습니다.',
-    'auth/network-request-failed':'네트워크 연결을 확인해주세요.',
+    'auth/email-already-in-use':   '이미 가입된 이메일입니다.',
+    'auth/invalid-email':          '이메일 형식이 올바르지 않습니다.',
+    'auth/weak-password':          '비밀번호가 너무 약합니다.',
+    'auth/user-not-found':         '가입되지 않은 이메일입니다.',
+    'auth/wrong-password':         '비밀번호가 올바르지 않습니다.',
+    'auth/invalid-credential':     '이메일 또는 비밀번호가 틀렸습니다.',
+    'auth/network-request-failed': '네트워크 연결을 확인해주세요.',
   };
   return map[code] || `오류: ${code}`;
 }
